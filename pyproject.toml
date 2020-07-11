@@ -1,0 +1,59 @@
+[build-system]
+requires = ["poetry>=1.0"]
+build-backend = "poetry.masonry.api"
+
+
+[tool.nitpick]
+style = "https://raw.githubusercontent.com/wemake-services/wemake-python-styleguide/master/styles/nitpick-style-wemake.toml"
+
+
+[tool.poetry]
+name = "spatial-biofilm-sorting-package"
+version = "0.1.0"
+description = "Python package for the spatial-biofilm-sorting project."
+license = "MIT"
+
+authors = ["Niklas Netter <niknett@gmail.com>"]
+
+readme = "README.md"
+
+repository = "https://github.com/gatoniel/spatial-biofilm-sorting-package"
+
+keywords = []
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[tool.poetry.dependencies]
+python = "^3.6.1"
+numpy = "^1.19.0"
+scipy = "^1.5.1"
+scikit-image = "^0.17.2"
+pandas = "^1.0.5"
+matplotlib = "^3.2.2"
+tifffile = "^2020.7.4"
+
+[tool.poetry.dev-dependencies]
+# https://github.com/timothycrosley/isort/issues/1273
+isort = "4.3.5"
+mypy = "^0.782"
+
+wemake-python-styleguide = "^0.14"
+flake8-pytest-style = "^1.2"
+nitpick = "^0.22"
+
+safety = "^1.9"
+
+pytest = "^5.4"
+pytest-cov = "^2.10"
+pytest-randomly = "^3.4"
+
+sphinx = "^2.2"
+sphinx-autodoc-typehints = "^1.10"
+doc8 = "^0.8"
+m2r = "^0.2"
+tomlkit = "^0.6"
