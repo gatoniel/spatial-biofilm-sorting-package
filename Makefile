@@ -2,7 +2,7 @@ SHELL:=/usr/bin/env bash
 
 .PHONY: lint
 lint:
-	mypy spatial_biofilm_sorting_package tests/**/*.py
+#	mypy spatial_biofilm_sorting_package tests/**/*.py
 	flake8 .
 	doc8 -q docs
 
