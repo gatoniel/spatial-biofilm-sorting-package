@@ -1,5 +1,6 @@
 import numpy as np
-from tifffile import imread
+import xml.etree.ElementTree as ET
+from tifffile import imread, TiffFile
 from pathlib import Path
 
 
@@ -57,3 +58,15 @@ def imread_wrapper(file):
     else:
         series = int(p.stem)
     return imread(file, series=series)
+
+
+def get_pixel_size(file):
+    with TiffFile(file) as tif:
+        root = ET.fromstring(tif.ome_metadata)
+        schema = '{http://www.w3.org/2001/XMLSchema-instance}schemaLocation'
+        namespace = root.attrib[schema].split(" ")[0]
+        xml_pixels = root.findall(
+            '{{{ns}}}Image/{{{ns}}}Pixels'.format(ns=namespace)
+        )[0]
+        ps = float(xml_pixels.attrib['PhysicalSizeX'])
+    return ps
