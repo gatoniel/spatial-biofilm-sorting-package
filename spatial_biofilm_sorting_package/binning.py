@@ -71,14 +71,13 @@ def bin_a_from_b(a, b, num_bins):
     bins[:, 0] -= 1
     bins[:, -1] += 1
 
-    mu_sigma = np.empty((num_prop1, num_prop2, num_bins, 4))
-    groups = [[] for i in range(num_prop1)]
+    mu_sigma = np.empty((num_prop1, num_prop2, num_bins, 2))
+    dfs = [[] for i in range(num_prop1)]
     pdf = np.empty_like(labels)
 
     for i in range(num_prop1):
         for j in range(num_prop2):
             ab = np.stack((a[:, i], b[:, j]), axis=-1)
-            print(ab)
 
             df = pd.DataFrame(ab, columns=["prop1", "prop2"])
             df["binned"] = pd.cut(
@@ -94,6 +93,6 @@ def bin_a_from_b(a, b, num_bins):
             mu_sigma[i, j, :, 0] = tmp_groups["prop1"].mean()
             mu_sigma[i, j, :, 1] = tmp_groups["prop1"].std()
 
-            groups[i].append(tmp_groups)
+            dfs[i].append(df)
 
-    return mu_sigma, groups, pdf, labels, bins
+    return mu_sigma, dfs, pdf, labels, bins

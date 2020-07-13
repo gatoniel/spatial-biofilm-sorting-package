@@ -45,3 +45,12 @@ def test_sigma():
     assert np.allclose(mu_sigma[0, :, 2:, 1], ones*10)
     assert np.allclose(mu_sigma[1, :, :2, 1], ones*2)
     assert np.allclose(mu_sigma[1, :, 2:, 1], ones*20)
+
+
+def test_mu_sigma_shape():
+    shape = bin_a_from_b(a, b, 4)[0].shape
+    assert len(shape) == 4
+    assert shape[0] == 2
+    assert shape[1] == 2
+    assert shape[2] == 4
+    assert shape[3] == 2
