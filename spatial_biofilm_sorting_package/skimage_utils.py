@@ -31,3 +31,15 @@ def regionprops_channels(label, intensity, props):
                 getattr(reg, props[j]) for reg in regions
             ])
     return properties
+
+
+def crop_img_from_prop(img, prop, channels_last=True):
+    bbox = prop.bbox
+    sl1 = slice(bbox[0], bbox[2])
+    sl2 = slice(bbox[1], bbox[3])
+    if img.ndim == 2:
+        return img[sl1, sl2]
+    elif channels_last:
+        return img[sl1, sl2, :]
+    else:
+        return img[:, sl1, sl2]

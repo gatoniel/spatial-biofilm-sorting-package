@@ -47,9 +47,13 @@ def create_position_maps(label, pixel_size=1):
     ))
     pos_measures_img[label, :] = pos_measures_flat
 
-    info = [
+    info = create_position_maps_info()
+    return pos_measures_flat, pos_measures_img, info
+
+
+def create_position_maps_info():
+    return [
         ("edt", "euclidean distance transform"),
         ("r_mass", "radial distance from center of mass"),
         ("edt_inv", "euclidean distance transform inverted"),
     ]
-    return pos_measures_flat, pos_measures_img, info
