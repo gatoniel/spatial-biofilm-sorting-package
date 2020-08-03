@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.colors as colors
 
+from matplotlib.lines import Line2D
+
 
 def plot_overlay(img, mask, axes, img_cmap, mask_alpha, mask_color):
     color = colors.colorConverter.to_rgba(mask_color)
@@ -13,3 +15,15 @@ def plot_overlay(img, mask, axes, img_cmap, mask_alpha, mask_color):
     cmap._lut[:, -1] = alphas
     axes.imshow(img, cmap=img_cmap)
     axes.imshow(mask, cmap=cmap)
+
+
+def custom_legend(colors, colorlabels, markers, markerlabels, ax):
+    custom_lines = [
+        Line2D([0], [0], color=color) for color in colors
+    ] + [
+        Line2D(
+            [0], [0], color="gray", marker=marker
+        ) for marker in markers
+    ]
+    custom_descr = colorlabels + markerlabels
+    ax.legend(custom_lines, custom_descr)
