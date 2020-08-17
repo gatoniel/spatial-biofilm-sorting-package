@@ -2,6 +2,7 @@ import numpy as np
 from skimage.filters import threshold_multiotsu
 from skimage.measure import label, regionprops
 from skimage.morphology import binary_dilation, binary_erosion, disk
+from scipy.ndimage.morphology import binary_fill_holes
 
 
 def get_edge_mask(true_fg, dil_radius, ero_radius):
@@ -52,6 +53,6 @@ def extract_foreground(img):
     ind = areas.argmax()
 
     prop = props[ind]
-    mask = labels == prop.label
+    mask = binary_fill_holes(labels == prop.label)
 
     return mask, prop
