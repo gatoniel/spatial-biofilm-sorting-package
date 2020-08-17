@@ -27,3 +27,8 @@ def custom_legend(colors, colorlabels, markers, markerlabels, ax):
     ]
     custom_descr = colorlabels + markerlabels
     ax.legend(custom_lines, custom_descr)
+
+
+def errorbar_alpha(ax, x, y, yerr, color, label, alpha=0.3):
+    ax.plot(x, y, color=color, label=label)
+    ax.fill_between(x, y-yerr, y+yerr, color=color, alpha=alpha)
