@@ -56,3 +56,25 @@ def extract_foreground(img):
     mask = binary_fill_holes(labels == prop.label)
 
     return mask, prop
+
+
+def extract_biofilm(img):
+    mask, _ = extract_foreground(img)
+    return fill_border_annulus(mask)
+
+
+def fill_border_annulus(mask):
+    # we reflect the mask along all borders fill holes and use only the
+    # original part of that image. Then the annulus must be filled.
+    x, y = mask.shape[0], mask.shape[1]
+    reflection = np.zeros((x * 3, y * 3), dtype=mask.dtype)
+    reflection[:x, y:2*y] = mask[::-1, :]
+    reflection[2*x:, y:2*y] = mask[::-1, :]
+
+    reflection[x:2*x, :y] = mask[:, ::-1]
+    reflection[x:2*x, 2*y:] = mask[:, ::-1]
+
+    reflection[x:2*x, y:2*y] = mask
+    reflection = binary_fill_holes(reflection)
+    mask = reflection[x:2*x, y:2*y]
+    return mask
