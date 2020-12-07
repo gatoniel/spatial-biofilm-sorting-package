@@ -28,6 +28,37 @@ def new_edge_threshold(img, mask, true_fg):
     return np.logical_or(np.digitize(img, thresholds), true_fg)
 
 
+def extract_foreground_biofilms(img, area_threshold=9000):
+    """
+    Extracts the single largest object from grayscale image img.
+    Returns a boolean mask and a skimage RegionProperty for that object.
+    """
+    thresholds = threshold_multiotsu(img, classes=3)
+    true_fg = np.digitize(img, [thresholds[0]])
+
+    mask_edge = get_edge_mask(true_fg, 100, 20)
+    masked_img = extract_mask(img, mask_edge)
+    new_true_fg = new_edge_threshold(masked_img, mask_edge, true_fg)
+
+    new_mask_edge = get_edge_mask(new_true_fg, 50, 10)
+    new_masked_img = extract_mask(img, new_mask_edge)
+    last_true_fg = new_edge_threshold(
+        new_masked_img, new_mask_edge, new_true_fg,
+    )
+
+    labels = label(last_true_fg)
+    props = regionprops(labels, img)
+
+    areas = np.asarray([prop.area for prop in props])
+    mask = np.zeros_like(labels)
+    inds = np.arange(len(areas))[areas > area_threshold]
+    for i, ind in enumerate(inds):
+        prop = props[ind]
+        mask[binary_fill_holes(labels == prop.label)] = i + 1
+
+    return mask
+
+
 def extract_foreground(img):
     """
     Extracts the single largest object from grayscale image img.
